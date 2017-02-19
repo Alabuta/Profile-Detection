@@ -100,8 +100,8 @@ void ProcessImageOnCPU(cv::Mat const &_image, cv::Mat &_result, Params const &_p
 
     cv::Mat1b mask;
     inRange(imageHSV,
-        cv::Scalar(_params.mainHSVRange.minH, _params.mainHSVRange.minS, _params.mainHSVRange.minV),
-        cv::Scalar(_params.mainHSVRange.maxH, _params.mainHSVRange.maxS, _params.mainHSVRange.maxV), mask);
+            cv::Scalar(_params.mainHSVRange.minH, _params.mainHSVRange.minS, _params.mainHSVRange.minV),
+            cv::Scalar(_params.mainHSVRange.maxH, _params.mainHSVRange.maxS, _params.mainHSVRange.maxV), mask);
 
 #if __USE_EXTRA_HSV_RANGE
     auto extraHUsed = (_params.extraHSVRange.maxH + _params.extraHSVRange.minH != 0);
@@ -129,8 +129,8 @@ void ProcessImageOnCPU(cv::Mat const &_image, cv::Mat &_result, Params const &_p
 
         cv::Mat1b extraMaskHSV;
         inRange(imageHSV,
-            cv::Scalar(minH, minS, minV),
-            cv::Scalar(maxH, maxS, maxV), extraMaskHSV);
+                cv::Scalar(minH, minS, minV),
+                cv::Scalar(maxH, maxS, maxV), extraMaskHSV);
 
         mask |= extraMaskHSV;
     }
@@ -222,7 +222,8 @@ void InitHSVMainBounds(Window &_window, Params &_params)
         auto editMainMinV = gbSettings.lock()->AddControl<Edit>(std::make_unique<Edit>(L"0", left, (height + 4) * 2 + top, width, height));
         auto editMainMaxV = gbSettings.lock()->AddControl<Edit>(std::make_unique<Edit>(L"255", left + width + 4, (height + 4) * 2 + top, width, height));
 
-        auto SetHSVBound = [&] (std::wstring const &line, int &bound) {
+        auto SetHSVBound = [] (std::wstring const &line, int &bound)
+        {
             try {
                 bound = std::max(0, std::min(std::stoi(line), 255));
             }
@@ -233,38 +234,44 @@ void InitHSVMainBounds(Window &_window, Params &_params)
         };
 
         if (!editMainMinH.expired()) {
-            editMainMinH.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.mainHSVRange.minH);
+            editMainMinH.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.mainHSVRange.minH);
             });
         }
 
         if (!editMainMaxH.expired()) {
-            editMainMaxH.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.mainHSVRange.maxH);
+            editMainMaxH.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.mainHSVRange.maxH);
             });
         }
 
         if (!editMainMinS.expired()) {
-            editMainMinS.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.mainHSVRange.minS);
+            editMainMinS.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.mainHSVRange.minS);
             });
         }
 
         if (!editMainMaxS.expired()) {
-            editMainMaxS.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.mainHSVRange.maxS);
+            editMainMaxS.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.mainHSVRange.maxS);
             });
         }
 
         if (!editMainMinV.expired()) {
-            editMainMinV.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.mainHSVRange.minV);
+            editMainMinV.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.mainHSVRange.minV);
             });
         }
 
         if (!editMainMaxV.expired()) {
-            editMainMaxV.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.mainHSVRange.maxV);
+            editMainMaxV.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.mainHSVRange.maxV);
             });
         }
     }
@@ -295,7 +302,8 @@ void InitHSVExtraBounds(Window &_window, Params &_params)
         auto editExtraMinV = gbSettings.lock()->AddControl<Edit>(std::make_unique<Edit>(L"0", left, (height + 4) * 2 + top, width, height));
         auto editExtraMaxV = gbSettings.lock()->AddControl<Edit>(std::make_unique<Edit>(L"0", left + width + 4, (height + 4) * 2 + top, width, height));
 
-        auto SetHSVBound = [&] (std::wstring const &line, int &bound) {
+        auto SetHSVBound = [&] (std::wstring const &line, int &bound)
+        {
             try {
                 bound = std::max(0, std::min(std::stoi(line), 255));
             }
@@ -306,38 +314,44 @@ void InitHSVExtraBounds(Window &_window, Params &_params)
         };
 
         if (!editExtraMinH.expired()) {
-            editExtraMinH.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.extraHSVRange.minH);
+            editExtraMinH.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.extraHSVRange.minH);
             });
         }
 
         if (!editExtraMaxH.expired()) {
-            editExtraMaxH.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.extraHSVRange.maxH);
+            editExtraMaxH.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.extraHSVRange.maxH);
             });
         }
 
         if (!editExtraMinS.expired()) {
-            editExtraMinS.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.extraHSVRange.minS);
+            editExtraMinS.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.extraHSVRange.minS);
             });
         }
 
         if (!editExtraMaxS.expired()) {
-            editExtraMaxS.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.extraHSVRange.maxS);
+            editExtraMaxS.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.extraHSVRange.maxS);
             });
         }
 
         if (!editExtraMinV.expired()) {
-            editExtraMinV.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.extraHSVRange.minV);
+            editExtraMinV.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.extraHSVRange.minV);
             });
         }
 
         if (!editExtraMaxV.expired()) {
-            editExtraMaxV.lock()->AddOnChangeListener([&] (std::wstring const &line) {
-                SetHSVBound(line, _params.extraHSVRange.maxV);
+            editExtraMaxV.lock()->AddOnChangeListener([&params = _params, SetHSVBound] (std::wstring const &line)
+            {
+                SetHSVBound(line, params.extraHSVRange.maxV);
             });
         }
     }
@@ -365,14 +379,16 @@ void InitMorhologicalTransformationsParamsControls(Window &_window, Params &_par
         auto tbErodeDilate = gbSettings.lock()->AddControl<Trackbar>(std::make_unique<Trackbar>(L"Erode-Dilate", left, top + height + 4, width, height, -10, 10));
 
         if (!tbOpenClose.expired()) {
-            tbOpenClose.lock()->AddOnChangeListener([&] (int value) {
-                _params.open_close_pos = value;
+            tbOpenClose.lock()->AddOnChangeListener([&params = _params] (int value)
+            {
+                params.open_close_pos = value;
             });
         }
 
         if (!tbErodeDilate.expired()) {
-            tbErodeDilate.lock()->AddOnChangeListener([&] (int value) {
-                _params.erode_dilate_pos = value;
+            tbErodeDilate.lock()->AddOnChangeListener([&params = _params] (int value)
+            {
+                params.erode_dilate_pos = value;
             });
         }
     }
@@ -398,7 +414,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     auto btnOpen = window.AddControl<Button>(std::make_unique<Button>(L"Open", 16, 16, window.width() - 32, 52));
 
     if (!btnOpen.expired()) {
-        btnOpen.lock()->AddOnClickListener([&] {
+        btnOpen.lock()->AddOnClickListener([btnOpen, &image]
+        {
             std::string path;
 
             auto index = GetOpenPath(btnOpen.lock()->handle(), path, {
@@ -436,7 +453,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     auto btnDetect = window.AddControl<Button>(std::make_unique<Button>(L"Detect", 152, 210, 292, 48));
 
     if (!btnDetect.expired()) {
-        btnDetect.lock()->AddOnClickListener([&] {
+        btnDetect.lock()->AddOnClickListener([&]
+        {
 
 #if __USE_GPGPU__
             if (gpuResult.data != nullptr)
@@ -478,7 +496,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     auto btnSave = window.AddControl<Button>(std::make_unique<Button>(L"Save", 152, 210 + 58, 292, 48));
 
     if (!btnSave.expired()) {
-        btnSave.lock()->AddOnClickListener([&] {
+        btnSave.lock()->AddOnClickListener([btnSave, &contours]
+        {
             std::string path;
 
             auto index = GetSavePath(btnSave.lock()->handle(), path, {
@@ -497,7 +516,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             std::cout.setf(std::ios::fixed);
 
             for (auto &contour : contours) {
-                std::sort(contour.begin(), contour.end(), [&] (cv::Point const &a, cv::Point const &b) -> bool {
+                std::sort(contour.begin(), contour.end(), [&] (cv::Point const &a, cv::Point const &b) -> bool
+                {
                     if (a.x < b.x)
                         return true;
 
@@ -507,7 +527,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     return false;
                 });
 
-                auto last = std::unique(contour.begin(), contour.end(), [] (cv::Point const &a, cv::Point const &b) {
+                auto last = std::unique(contour.begin(), contour.end(), [] (cv::Point const &a, cv::Point const &b)
+                {
                     return a.x == b.x && a.y == b.y;
                 });
 

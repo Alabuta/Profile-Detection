@@ -3,14 +3,13 @@
 #include "Text.h"
 
 
-WNDPROC Text::defaultCallbackFunc_{nullptr};
 
 Text::Text(std::wstring _name, int _x, int _y, int _width, int _height, eALIGN _align) : Control(_name, _x, _y, _width, _height)
 {
     align_ = _align;
 }
 
-HWND Text::Instantiate(HWND const &_parent, unsigned __int64 _id)
+HWND Text::Instantiate(HWND _parent, std::uint64_t _id)
 {
     static HFONT const hFont = CreateFontW(
         -14, 0, 0, 0,

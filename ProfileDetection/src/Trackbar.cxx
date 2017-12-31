@@ -6,7 +6,6 @@
 #include <WindowsX.h>
 
 
-WNDPROC Trackbar::defaultCallbackFunc_{nullptr};
 
 Trackbar::Trackbar(std::wstring _name, int _x, int _y, int _width, int _height, int _min, int _max) : Control(_name, _x, _y, _width, _height)
 {
@@ -14,7 +13,7 @@ Trackbar::Trackbar(std::wstring _name, int _x, int _y, int _width, int _height, 
     max_ = _max;
 }
 
-HWND Trackbar::Instantiate(HWND const &_parent, unsigned __int64 _id)
+HWND Trackbar::Instantiate(HWND _parent, std::uint64_t _id)
 {
     static HFONT const hFont = CreateFontW(
         -14, 0, 0, 0,
@@ -45,14 +44,14 @@ HWND Trackbar::Instantiate(HWND const &_parent, unsigned __int64 _id)
     return handle_;
 }
 
-void Trackbar::AddOnChangeListener(std::function<void(int)> const &_listener)
+void Trackbar::AddOnChangeListener(std::function<void(int)> _listener)
 {
     listeners_.emplace_front(_listener);
 }
 
 void Trackbar::NotifyAllListeners() const
 {
-    for (auto const &listener : listeners_)
+    for (auto &&listener : listeners_)
         listener(value_);
 }
 

@@ -28,7 +28,7 @@ public:
     template<class T>
     std::weak_ptr<T> AddControl(std::unique_ptr<Control> &&control);
 
-    HWND const &hWnd() const { return hWnd_; }
+    HWND hWnd() const { return hWnd_; }
 
     int32_t width() const;
     int32_t height() const;

@@ -7,8 +7,6 @@
 #include "Edit.h"
 
 
-WNDPROC Edit::defaultCallbackFunc_{nullptr};
-
 Edit::Edit(std::wstring _name, int _x, int _y, int _width, int _height, int _lineCount) : Control(_name, _x, _y, _width, _height)
 {
     line_ = _name;
@@ -17,7 +15,7 @@ Edit::Edit(std::wstring _name, int _x, int _y, int _width, int _height, int _lin
     line_.resize(lineCount_);
 }
 
-HWND Edit::Instantiate(HWND const &_parent, unsigned __int64 _id)
+HWND Edit::Instantiate(HWND _parent, std::uint64_t _id)
 {
     static HFONT const hFont = CreateFontW(
         -14, 0, 0, 0,

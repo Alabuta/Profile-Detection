@@ -12,7 +12,7 @@ class GroupBox final : public Control {
 public:
 
     explicit GroupBox(std::wstring name, int x, int y, int width, int height);
-    virtual HWND Instantiate(HWND const &parent, unsigned __int64 id) override;
+    HWND Instantiate(HWND parent, std::uint64_t id) override;
 
     template<class T>
     std::weak_ptr<T> AddControl(std::unique_ptr<Control> &&control);
@@ -20,10 +20,10 @@ public:
     int32_t width() const;
     int32_t height() const;
 
-    virtual LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) override;
+    LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) override;
 
 private:
-    static WNDPROC defaultCallbackFunc_;
+	inline static WNDPROC defaultCallbackFunc_{ nullptr };
 
     RECT clientRect_{0, 0, 0, 0};
 

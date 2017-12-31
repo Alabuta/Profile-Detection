@@ -22,11 +22,11 @@
 #include "IORoutines.h"
 
 
-int GetPath(HWND const &_hWnd, std::string &_path, std::initializer_list<Filter> _filters, DWORD _flags)
+int GetPath(HWND _hWnd, std::string &_path, std::initializer_list<Filter> _filters, DWORD _flags)
 {
     std::wstring filters;
 
-    for (auto const &filter : _filters) {
+    for (auto &&filter : _filters) {
         filters += filter.description + L" (" + filter.extensions + L")";
         filters.push_back(L'\0');
         filters += filter.extensions;
@@ -68,12 +68,12 @@ int GetPath(HWND const &_hWnd, std::string &_path, std::initializer_list<Filter>
     return ofn.nFilterIndex;
 }
 
-int GetOpenPath(HWND const &_hWnd, std::string &_path, std::initializer_list<Filter> _filters)
+int GetOpenPath(HWND _hWnd, std::string &_path, std::initializer_list<Filter> _filters)
 {
     return GetPath(_hWnd, _path, _filters, OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST);
 }
 
-int GetSavePath(HWND const &_hWnd, std::string &_path, std::initializer_list<Filter> _filters)
+int GetSavePath(HWND _hWnd, std::string &_path, std::initializer_list<Filter> _filters)
 {
     return GetPath(_hWnd, _path, _filters, OFN_OVERWRITEPROMPT);
 }

@@ -11,11 +11,11 @@ class Edit final : public Control {
 public:
 
     explicit Edit(std::wstring name, int x, int y, int width, int height, int lineCount = 3);
-    virtual HWND Instantiate(HWND const &parent, unsigned __int64 id) override;
+    HWND Instantiate(HWND parent, std::uint64_t id) override;
 
     void AddOnChangeListener(std::function<void(std::wstring const &)> const &listener);
 
-    virtual LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) override;
+    LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) override;
 
     std::wstring const &line() const;
     std::wstring const &line(std::wstring &&line);
@@ -28,7 +28,7 @@ private:
 
     void NotifyAllListeners() const;
 
-    static WNDPROC defaultCallbackFunc_;
+	inline static WNDPROC defaultCallbackFunc_{ nullptr };
     LRESULT Process(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 
 };

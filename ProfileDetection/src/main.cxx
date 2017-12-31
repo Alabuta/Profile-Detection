@@ -433,7 +433,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             gpuImage.upload(image);
 #endif
 
-            int const width = 720, height = static_cast<int>(720 * image.rows / image.cols);
+            auto const width = 720, height = static_cast<int>(720 * image.rows / image.cols);
 
             cv::namedWindow("Image", cv::WINDOW_KEEPRATIO);
             cv::resizeWindow("Image", width, height);
@@ -512,11 +512,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
             if (!file.is_open())
                 return;
-
+			
             std::cout.setf(std::ios::fixed);
 
-            for (auto &contour : contours) {
-                std::sort(contour.begin(), contour.end(), [&] (cv::Point const &a, cv::Point const &b) -> bool
+            for (auto &&contour : contours) {
+                std::sort(contour.begin(), contour.end(), [] (auto &&a, auto &&b)
                 {
                     if (a.x < b.x)
                         return true;
@@ -527,14 +527,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     return false;
                 });
 
-                auto last = std::unique(contour.begin(), contour.end(), [] (cv::Point const &a, cv::Point const &b)
+                auto last = std::unique(contour.begin(), contour.end(), [] (auto &&a, auto &&b)
                 {
                     return a.x == b.x && a.y == b.y;
                 });
 
                 contour.erase(last, contour.end());
 
-                for (auto const &point : contour)
+                for (auto &&point : contour)
                     file << std::setw(8) << point.x << std::setw(8) << point.y << std::endl;
             }
 

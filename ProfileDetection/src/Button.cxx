@@ -3,12 +3,11 @@
 #include "Button.h"
 
 
-WNDPROC Button::defaultCallbackFunc_{nullptr};
 
 Button::Button(std::wstring _name, int _x, int _y, int _width, int _height) : Control(_name, _x, _y, _width, _height)
 {}
 
-HWND Button::Instantiate(HWND const &_parent, unsigned __int64 _id)
+HWND Button::Instantiate(HWND _parent, std::uint64_t _id)
 {
     static HFONT const hFont = CreateFontW(
         -14, 0, 0, 0,

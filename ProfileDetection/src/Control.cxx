@@ -2,8 +2,6 @@
 #include "Control.h"
 
 
-/*static*/ std::unordered_map<HWND, Control *> Control::controlsTable;
-
 Control::Control(std::wstring _name, int _x, int _y, int _width, int _height) :
     name_(_name), rect_(std::move(RECT{_x, _y, _width, _height}))
 {}

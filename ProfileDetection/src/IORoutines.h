@@ -10,5 +10,5 @@ struct Filter {
     std::wstring extensions;
 };
 
-int GetOpenPath(HWND const &hWnd, std::string &path, std::initializer_list<Filter> filters);
-int GetSavePath(HWND const &hWnd, std::string &path, std::initializer_list<Filter> filters);
+int GetOpenPath(HWND hWnd, std::string &path, std::initializer_list<Filter> filters);
+int GetSavePath(HWND hWnd, std::string &path, std::initializer_list<Filter> filters);

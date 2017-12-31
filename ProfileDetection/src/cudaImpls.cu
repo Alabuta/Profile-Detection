@@ -4,14 +4,14 @@
 #if __USE_GPGPU__
 
 #if _DEBUG
-#   pragma comment(lib, "opencv_core320d.lib")
+#   pragma comment(lib, "opencv_core340d.lib")
 #   pragma comment(lib, "opencv_cudafilters320d.lib")
 #   pragma comment(lib, "opencv_cudaimgproc320d.lib")
 #   pragma comment(lib, "opencv_highgui320d.lib")
 #   pragma comment(lib, "opencv_imgcodecs320d.lib")
 #   pragma comment(lib, "opencv_imgproc320d.lib")
 #elif NDEBUG
-#   pragma comment(lib, "opencv_core320.lib")
+#   pragma comment(lib, "opencv_core340.lib")
 #   pragma comment(lib, "opencv_cudafilters320.lib")
 #   pragma comment(lib, "opencv_cudaimgproc320.lib")
 #   pragma comment(lib, "opencv_highgui320.lib")

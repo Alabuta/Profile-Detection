@@ -27,7 +27,7 @@ HWND Text::Instantiate(HWND _parent, std::uint64_t _id)
 
     handle_ = CreateWindowExW(0, L"STATIC", name_.data(), WS_CHILD | WS_VISIBLE | alignStyle,
         rect_.left, rect_.top, rect_.right, rect_.bottom,
-        _parent, reinterpret_cast<HMENU>(_id), (HINSTANCE)GetWindowLongPtrW(_parent, GWLP_HINSTANCE), nullptr);
+        _parent, reinterpret_cast<HMENU>(_id), reinterpret_cast<HINSTANCE>(GetWindowLongPtrW(_parent, GWLP_HINSTANCE)), nullptr);
 
     controlsTable.insert_or_assign(handle_, this);
 

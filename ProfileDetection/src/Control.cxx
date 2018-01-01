@@ -3,8 +3,13 @@
 
 
 Control::Control(std::wstring _name, int _x, int _y, int _width, int _height) :
-    name_(_name), rect_(std::move(RECT{_x, _y, _width, _height}))
+	name_(_name), rect_(std::move(RECT{ _x, _y, _width, _height }))
 {}
+
+
+//Control::Control(std::wstring name, HWND parent, std::uint64_t id) :
+//	name_(_name)
+//{}
 
 void Control::SetName(std::wstring &&_name)
 {

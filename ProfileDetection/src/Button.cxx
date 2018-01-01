@@ -23,7 +23,7 @@ HWND Button::Instantiate(HWND _parent, std::uint64_t _id)
 
     handle_ = CreateWindowExW(0, L"BUTTON", name_.data(), WS_CHILD | WS_VISIBLE,
         rect_.left, rect_.top, rect_.right, rect_.bottom,
-        _parent, reinterpret_cast<HMENU>(_id), (HINSTANCE)GetWindowLongPtrW(_parent, GWLP_HINSTANCE), nullptr);
+        _parent, reinterpret_cast<HMENU>(_id), reinterpret_cast<HINSTANCE>(GetWindowLongPtrW(_parent, GWLP_HINSTANCE)), nullptr);
 
     controlsTable.insert_or_assign(handle_, this);
 
@@ -46,7 +46,7 @@ LRESULT Button::HandleMessage(UINT _msg, WPARAM _wParam, LPARAM _lParam)
     return 0L;
 }
 
-void Button::AddOnClickListener(std::function<void()> const &_listener)
+void Button::AddOnClickListener(std::function<void()> _listener)
 {
     listeners_.emplace_front(_listener);
 }
@@ -60,7 +60,7 @@ void Button::AddOnClickListener(std::function<void()> const &_listener)
 
 void Button::NotifyAllListeners() const
 {
-    for (auto const &listener : listeners_)
+    for (auto &&listener : listeners_)
         listener();
 }
 

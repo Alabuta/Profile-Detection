@@ -29,7 +29,7 @@ HWND Trackbar::Instantiate(HWND _parent, std::uint64_t _id)
 
     handle_ = CreateWindowExW(0, TRACKBAR_CLASS, name_.data(), WS_CHILD | WS_VISIBLE | TBS_AUTOTICKS | TBS_HORZ | TBS_TOOLTIPS,
         rect_.left, rect_.top, rect_.right, rect_.bottom,
-        _parent, reinterpret_cast<HMENU>(_id), (HINSTANCE)GetWindowLongPtrW(_parent, GWLP_HINSTANCE), nullptr);
+        _parent, reinterpret_cast<HMENU>(_id), reinterpret_cast<HINSTANCE>(GetWindowLongPtrW(_parent, GWLP_HINSTANCE)), nullptr);
 
     controlsTable.insert_or_assign(handle_, this);
 

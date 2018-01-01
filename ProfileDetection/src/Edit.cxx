@@ -31,7 +31,7 @@ HWND Edit::Instantiate(HWND _parent, std::uint64_t _id)
 
     handle_ = CreateWindowExW(WS_EX_CLIENTEDGE, L"EDIT", name_.data(), WS_CHILD | WS_VISIBLE | ES_LEFT | ES_NUMBER | WS_TABSTOP,
         rect_.left, rect_.top, rect_.right, rect_.bottom,
-        _parent, reinterpret_cast<HMENU>(_id), (HINSTANCE)GetWindowLongPtrW(_parent, GWLP_HINSTANCE), nullptr);
+        _parent, reinterpret_cast<HMENU>(_id), reinterpret_cast<HINSTANCE>(GetWindowLongPtrW(_parent, GWLP_HINSTANCE)), nullptr);
 
     controlsTable.insert_or_assign(handle_, this);
 
@@ -52,7 +52,7 @@ void Edit::AddOnChangeListener(std::function<void(std::wstring const &)> const &
 
 void Edit::NotifyAllListeners() const
 {
-    for (auto const &listener : listeners_)
+    for (auto &&listener : listeners_)
         listener(line_);
 }
 

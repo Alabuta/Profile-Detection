@@ -16,7 +16,7 @@ public:
 
     LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) override;
 
-    void AddOnClickListener(std::function<void()> const &listener);
+    void AddOnClickListener(std::function<void()> listener);
 
 private:
 	inline static WNDPROC defaultCallbackFunc_{ nullptr };
@@ -25,4 +25,23 @@ private:
     std::forward_list<std::function<void()>> listeners_;
 
     void NotifyAllListeners() const;
+};
+
+
+class Button1 final : public Control1 {
+public:
+
+	explicit Button1(HWND parent, std::uint64_t id, std::wstring name, int x, int y, int width, int height);
+
+	LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) override;
+
+	void AddOnClickListener(std::function<void()> listener);
+
+private:
+	inline static WNDPROC defaultCallbackFunc_{ nullptr };
+	std::forward_list<std::function<void()>> listeners_;
+
+	void NotifyAllListeners() const;
+
+	LRESULT Process(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 };

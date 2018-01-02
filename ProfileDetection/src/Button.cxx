@@ -105,6 +105,41 @@ LRESULT Button1::HandleMessage(UINT, WPARAM, LPARAM)
 	return 0L;
 }
 
+void Button1::AddOnClickListener(std::function<void()> _listener)
+{
+	listeners_.emplace_front(_listener);
+
+	using T = std::function<void()>;
+
+	listeners_.remove_if([] (auto &&listener)
+	{
+		return !listener;
+	});
+
+	listeners_.sort([] (T const &lhs, T const &rhs)
+	{
+		return lhs.target < rhs.target;
+	});
+
+	/*listeners_.unique([](auto &&lhs, auto &&rhs)
+	{
+		return lhs.target == rhs.target;
+	});*/
+}
+
+//void Button::RemoveOnClickListener(std::function<void(int)> callback)
+//{
+//    listeners_.remove_if([&callback] (std::function<void()> &p) {
+//        return callback.target<void()>() == p.target<void()>();
+//    });
+//}
+
+void Button1::NotifyAllListeners() const
+{
+	for (auto &&listener : listeners_)
+		listener();
+}
+
 
 LRESULT Button1::Process(HWND _hWnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
 {

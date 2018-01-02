@@ -18,6 +18,7 @@
 #endif
 
 class Control;
+class Control1;
 
 class Window final {
 public:
@@ -27,6 +28,16 @@ public:
 
     template<class T>
     std::weak_ptr<T> AddControl(std::unique_ptr<Control> &&control);
+
+	template<class T, typename std::enable_if_t<std::is_base_of_v<Control1, T>>* = 0, typename ... Args>
+	std::weak_ptr<T> AddControl(std::wstring name, Args &&... args)
+	{
+		auto control = std::make_shared<T>(hWnd_, ++controlIDs_, name, std::forward<Args>(args)...);
+
+		controls1_.insert_or_assign(controlIDs_, control);
+
+		return std::weak_ptr<T>(control);
+	}
 
     HWND hWnd() const { return hWnd_; }
 
@@ -47,7 +58,8 @@ private:
 
     WORD controlIDs_{0};
 
-    std::unordered_map<WORD, std::shared_ptr<Control>> controls_;
+	std::unordered_map<WORD, std::shared_ptr<Control>> controls_;
+	std::unordered_map<WORD, std::shared_ptr<Control1>> controls1_;
 
     Window() = delete;
     Window(Window const &) = delete;
@@ -66,6 +78,7 @@ std::weak_ptr<T> Window::AddControl(std::unique_ptr<Control> &&_control)
 
     return std::dynamic_pointer_cast<T>(std::get<0>(pair)->second);
 }
+
 
 inline int32_t Window::width() const
 {

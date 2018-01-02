@@ -411,6 +411,38 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     Window window(L"Profile Detection", hInstance, 476, 400);
 
+	auto btnOpen = window.AddControl<Button1>(L"Open", 16, 16, window.width() - 32, 52);
+
+	if (!btnOpen.expired()) {
+		btnOpen.lock()->AddOnClickListener([btnOpen, &image]
+		{
+			std::string path;
+
+			auto index = GetOpenPath(btnOpen.lock()->handle(), path, {
+				Filter{ L"Windows bitmaps", L"*.bmp; *.dib" },
+				Filter{ L"JPEG", L"*.jpeg; *.jpg; *.jpe" },
+				Filter{ L"JPEG 2000", L"*.jp2" },
+				Filter{ L"Portable Network Graphics", L"*.png" }
+				});
+
+			if (index < 1)
+				return;
+
+			ReadImage(path, image);
+#if __USE_GPGPU__
+			gpuImage.upload(image);
+#endif
+
+			auto const width = 720, height = static_cast<int>(720 * image.rows / image.cols);
+
+			cv::namedWindow("Image", cv::WINDOW_KEEPRATIO);
+			cv::resizeWindow("Image", width, height);
+			cv::imshow("Image", image);
+		});
+	}
+
+
+#if 0
     auto btnOpen = window.AddControl<Button>(std::make_unique<Button>(L"Open", 16, 16, window.width() - 32, 52));
 
     if (!btnOpen.expired()) {
@@ -541,6 +573,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             std::cout.setf(std::ios::right);
         });
     }
+#endif
 
     auto const exitCode = Window::Update();
 

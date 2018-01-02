@@ -155,12 +155,12 @@ LRESULT Window::Process(HWND _hWnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
 
         case WM_HSCROLL:
         case WM_VSCROLL:
-            controls_[GetDlgCtrlID((HWND)_lParam)]->HandleMessage(_msg, _wParam, _lParam);
+            controls1_[GetDlgCtrlID((HWND)_lParam)]->HandleMessage(_msg, _wParam, _lParam);
             return 0L;
 
         case WM_COMMAND:
             if (HIWORD(_wParam) != 1)
-                controls_[LOWORD(_wParam)]->HandleMessage(_msg, _wParam, _lParam);
+                controls1_[LOWORD(_wParam)]->HandleMessage(_msg, _wParam, _lParam);
             return 0L;
 
         case WM_PARENTNOTIFY:

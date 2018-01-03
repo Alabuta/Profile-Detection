@@ -414,11 +414,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	auto btnOpen = window.AddControl<Button1>(L"Open", 16, 16, window.width() - 32, 52);
 
 	if (!btnOpen.expired()) {
-		btnOpen.lock()->AddOnClickListener([btnOpen, &image]
+		auto ptr = btnOpen.lock();
+
+		ptr->AddOnClickListener([ptr, &image]
 		{
 			std::string path;
 
-			auto index = GetOpenPath(btnOpen.lock()->handle(), path, {
+			auto index = GetOpenPath(ptr->handle(), path, {
 				Filter{ L"Windows bitmaps", L"*.bmp; *.dib" },
 				Filter{ L"JPEG", L"*.jpeg; *.jpg; *.jpe" },
 				Filter{ L"JPEG 2000", L"*.jp2" },

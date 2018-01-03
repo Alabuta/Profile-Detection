@@ -36,6 +36,7 @@ public:
 	LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) override;
 
 	void AddOnClickListener(std::function<void()> listener);
+	void RemoveOnClickListener(std::function<void()> listener);
 
 private:
 	inline static WNDPROC defaultCallbackFunc_{ nullptr };

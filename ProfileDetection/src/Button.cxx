@@ -100,39 +100,48 @@ Button1::Button1(HWND _parent, std::uint64_t _id, std::wstring _name, int x, int
 
 LRESULT Button1::HandleMessage(UINT, WPARAM, LPARAM)
 {
-	//NotifyAllListeners();
+	NotifyAllListeners();
 
 	return 0L;
-}
+}	
 
 void Button1::AddOnClickListener(std::function<void()> _listener)
 {
-	listeners_.emplace_front(_listener);
-
-	using T = std::function<void()>;
+	if (_listener)
+		listeners_.push_front(_listener);
 
 	listeners_.remove_if([] (auto &&listener)
 	{
-		return !listener;
+		return !listener || listener == nullptr;
 	});
 
-	listeners_.sort([] (T const &lhs, T const &rhs)
+	listeners_.unique([](auto &&lhs, auto &&rhs)
 	{
-		return lhs.target < rhs.target;
+		return *lhs.target<void(*)()>() == *rhs.target<void(*)()>();
 	});
-
-	/*listeners_.unique([](auto &&lhs, auto &&rhs)
-	{
-		return lhs.target == rhs.target;
-	});*/
 }
 
-//void Button::RemoveOnClickListener(std::function<void(int)> callback)
-//{
-//    listeners_.remove_if([&callback] (std::function<void()> &p) {
-//        return callback.target<void()>() == p.target<void()>();
-//    });
-//}
+void Button1::RemoveOnClickListener(std::function<void()> _listener)
+{
+	listeners_.remove_if([] (auto &&listener)
+	{
+		return !listener || listener == nullptr;
+	});
+
+	if (!_listener || _listener == nullptr)
+		return;
+
+	listeners_.remove_if([&_listener] (auto &&listener)
+	{
+		auto ptr1 = _listener.target<void(*)()>();
+		auto ptr2 =  listener.target<void(*)()>();
+
+		if (ptr1 == nullptr || ptr2 == nullptr)
+			return true;
+
+		return *ptr1 == *ptr2;
+	});
+}
 
 void Button1::NotifyAllListeners() const
 {
